@@ -117,6 +117,13 @@ const targetUrl = process.env.QA_URL || 'http://127.0.0.1:4179';
         insightCardCount:document.querySelectorAll('.insight-card').length,
         infoproductCardCount:document.querySelectorAll('.infoproduct-card').length,
         whatsappFloatCount:document.querySelectorAll('.whatsapp-float').length,
+        heroIsFullBleed:(() => {
+          const bounds = document.querySelector('.hero')?.getBoundingClientRect();
+          return Boolean(bounds && Math.abs(bounds.left) <= 1 && Math.abs(bounds.width - innerWidth) <= 2);
+        })(),
+        heroBackgroundWidth:document.querySelector('.hero-visual img')?.naturalWidth || 0,
+        typedHeadline:Boolean(document.querySelector('#hero-typed')?.dataset.words),
+        typingCaretCount:document.querySelectorAll('.typing-caret').length,
         visiblePhoneNumber:document.body.innerText.includes('(41) 9 9612-8878'),
         whatsappLinks:document.querySelectorAll('a[href^="https://wa.me/5541996128878"]').length,
       };

@@ -26,6 +26,51 @@ document.addEventListener('keydown', (event) => {
 const year = document.querySelector('#year');
 if (year) year.textContent = new Date().getFullYear();
 
+const typedWord = document.querySelector('#hero-typed');
+
+if (typedWord && !reduceMotion) {
+  let words = ['CONVERSAS.'];
+  try {
+    const configuredWords = JSON.parse(typedWord.dataset.words || '[]');
+    if (Array.isArray(configuredWords) && configuredWords.length) words = configuredWords;
+  } catch (_) {
+    // Mantém a frase inicial quando o atributo estiver inválido.
+  }
+
+  let wordIndex = 0;
+  let characterIndex = words[0].length;
+  let deleting = true;
+
+  const typeHeadline = () => {
+    const word = words[wordIndex];
+    typedWord.textContent = word.slice(0, characterIndex);
+
+    if (deleting) {
+      characterIndex -= 1;
+      if (characterIndex < 0) {
+        deleting = false;
+        wordIndex = (wordIndex + 1) % words.length;
+        characterIndex = 0;
+        window.setTimeout(typeHeadline, 260);
+        return;
+      }
+      window.setTimeout(typeHeadline, 48);
+      return;
+    }
+
+    characterIndex += 1;
+    if (characterIndex > words[wordIndex].length) {
+      deleting = true;
+      characterIndex = words[wordIndex].length;
+      window.setTimeout(typeHeadline, 1450);
+      return;
+    }
+    window.setTimeout(typeHeadline, 82);
+  };
+
+  window.setTimeout(typeHeadline, 1550);
+}
+
 const clientTrack = document.querySelector('.client-track');
 const clientSet = clientTrack?.querySelector('.client-set');
 
@@ -114,17 +159,18 @@ if ('IntersectionObserver' in window && !reduceMotion) {
   metricValues.forEach((element) => metricObserver.observe(element));
 }
 
+const hero = document.querySelector('.hero');
 const heroVisual = document.querySelector('.hero-visual');
-if (heroVisual && window.matchMedia('(pointer:fine)').matches && !reduceMotion) {
-  heroVisual.addEventListener('pointermove', (event) => {
-    const bounds = heroVisual.getBoundingClientRect();
+if (hero && heroVisual && window.matchMedia('(pointer:fine)').matches && !reduceMotion) {
+  hero.addEventListener('pointermove', (event) => {
+    const bounds = hero.getBoundingClientRect();
     const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * -14;
     const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * -14;
     heroVisual.style.setProperty('--parallax-x', `${x}px`);
     heroVisual.style.setProperty('--parallax-y', `${y}px`);
   });
 
-  heroVisual.addEventListener('pointerleave', () => {
+  hero.addEventListener('pointerleave', () => {
     heroVisual.style.setProperty('--parallax-x', '0px');
     heroVisual.style.setProperty('--parallax-y', '0px');
   });
