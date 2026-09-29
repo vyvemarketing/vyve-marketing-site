@@ -112,6 +112,12 @@ const targetUrl = process.env.QA_URL || 'http://127.0.0.1:4179';
         carouselAnimation:getComputedStyle(document.querySelector('.client-track')).animationName,
         certificationCount:document.querySelectorAll('.credential:not(.credential-specialty)').length,
         specialtyCount:document.querySelectorAll('.credential-specialty').length,
+        credentialLogoCount:document.querySelectorAll('.credential-logo img').length,
+        processIconCount:document.querySelectorAll('.step-icon svg').length,
+        insightCardCount:document.querySelectorAll('.insight-card').length,
+        infoproductCardCount:document.querySelectorAll('.infoproduct-card').length,
+        whatsappFloatCount:document.querySelectorAll('.whatsapp-float').length,
+        visiblePhoneNumber:document.body.innerText.includes('(41) 9 9612-8878'),
         whatsappLinks:document.querySelectorAll('a[href^="https://wa.me/5541996128878"]').length,
       };
     });
@@ -151,6 +157,35 @@ const targetUrl = process.env.QA_URL || 'http://127.0.0.1:4179';
       checks,
       accessibility,
     });
+    await page.close();
+  }
+
+  for (const route of [
+    '/blog/',
+    '/blog/marketing-para-clinica-estetica.html',
+    '/blog/marketing-para-clinica-dentaria.html',
+    '/blog/marketing-para-advogados.html',
+    '/blog/marketing-para-academias.html',
+    '/blog/gestao-de-trafego-pago.html',
+    '/blog/marketing-para-infoprodutores.html',
+  ]) {
+    const page = await browser.newPage();
+    const errors = [];
+    const failedRequests = [];
+    page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
+    page.on('pageerror', (error) => errors.push(error.message));
+    page.on('requestfailed', (request) => failedRequests.push({url:request.url(),reason:request.failure()?.errorText}));
+    await page.setViewport({width:route === '/blog/' ? 390 : 1440,height:route === '/blog/' ? 844 : 1000,deviceScaleFactor:1});
+    const response = await page.goto(new URL(route.replace(/^\//, ''), `${targetUrl.replace(/\/$/, '')}/`).href, {waitUntil:'networkidle0'});
+    const checks = await page.evaluate(() => ({
+      h1Count:document.querySelectorAll('h1').length,
+      canonical:document.querySelector('link[rel="canonical"]')?.href || '',
+      brokenImages:[...document.images].filter((image) => !image.complete || image.naturalWidth === 0).map((image) => image.src),
+      horizontalOverflow:document.documentElement.scrollWidth > window.innerWidth + 1,
+      structuredDataCount:document.querySelectorAll('script[type="application/ld+json"]').length,
+      visiblePhoneNumber:document.body.innerText.includes('(41) 9 9612-8878'),
+    }));
+    results.push({view:`blog:${route}`,status:response.status(),title:await page.title(),errors,failedRequests,checks});
     await page.close();
   }
 

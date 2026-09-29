@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vyvemarketing.github.io/vyve-marketing-site/sitemap.xml
