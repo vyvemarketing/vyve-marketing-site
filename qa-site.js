@@ -1,45 +1,152 @@
 const puppeteer = require('/Users/wavveros/gods-eye-view/node_modules/puppeteer');
 const path = require('path');
 
+const targetUrl = process.env.QA_URL || 'http://127.0.0.1:4179';
+
 (async () => {
   const browser = await puppeteer.launch({
-    headless: true,
-    executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-    args: ['--no-sandbox'],
+    headless:true,
+    executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
+    args:['--no-sandbox'],
   });
+
   const results = [];
   for (const view of [
     {name:'desktop',width:1440,height:1000},
+    {name:'tablet',width:768,height:1024},
     {name:'mobile',width:390,height:844},
   ]) {
     const page = await browser.newPage();
     const errors = [];
-    page.on('console', (msg) => { if (msg.type() === 'error') errors.push(msg.text()); });
+    const failedRequests = [];
+
+    page.on('console', (message) => {
+      if (message.type() === 'error') errors.push(message.text());
+    });
     page.on('pageerror', (error) => errors.push(error.message));
+    page.on('requestfailed', (request) => failedRequests.push({url:request.url(),reason:request.failure()?.errorText}));
+
+    await page.evaluateOnNewDocument(() => {
+      window.__qaVitals = {cls:0,lcp:0};
+      new PerformanceObserver((list) => {
+        list.getEntries().forEach((entry) => { window.__qaVitals.cls += entry.value; });
+      }).observe({type:'layout-shift',buffered:true});
+      new PerformanceObserver((list) => {
+        const entries = list.getEntries();
+        window.__qaVitals.lcp = entries.at(-1)?.startTime || 0;
+      }).observe({type:'largest-contentful-paint',buffered:true});
+    });
+
     await page.setViewport({width:view.width,height:view.height,deviceScaleFactor:1});
-    const response = await page.goto('http://127.0.0.1:8019', {waitUntil:'networkidle0'});
-    if (view.name === 'mobile') {
+    const response = await page.goto(targetUrl, {waitUntil:'networkidle0'});
+    const initialVitals = await page.evaluate(() => ({
+      fcp:Math.round(performance.getEntriesByName('first-contentful-paint')[0]?.startTime || 0),
+      ...window.__qaVitals,
+    }));
+
+    if (view.name !== 'desktop') {
       await page.click('.menu-button');
       const expanded = await page.$eval('.menu-button', (button) => button.getAttribute('aria-expanded'));
-      if (expanded !== 'true') errors.push('Menu mobile não abriu');
-      await page.click('.menu a');
+      if (expanded !== 'true') errors.push('Menu responsivo não abriu');
+      await page.keyboard.press('Escape');
+      const closed = await page.$eval('.menu-button', (button) => button.getAttribute('aria-expanded'));
+      if (closed !== 'false') errors.push('Menu responsivo não fechou com Escape');
     }
+
     await page.evaluate(async () => {
+      document.querySelectorAll('img[loading="lazy"]').forEach((image) => { image.loading = 'eager'; });
       for (let y = 0; y < document.body.scrollHeight; y += Math.floor(innerHeight * .72)) {
         window.scrollTo(0, y);
-        await new Promise((resolve) => setTimeout(resolve, 90));
+        await new Promise((resolve) => setTimeout(resolve, 80));
       }
+      const clientGrid = document.querySelector('.client-grid');
+      if (clientGrid) clientGrid.scrollLeft = clientGrid.scrollWidth;
+      await new Promise((resolve) => setTimeout(resolve, 350));
+      if (clientGrid) clientGrid.scrollLeft = 0;
       document.querySelectorAll('.reveal').forEach((element) => element.classList.add('visible'));
       window.scrollTo(0, document.body.scrollHeight);
     });
-    await new Promise((resolve) => setTimeout(resolve, 400));
+    await new Promise((resolve) => setTimeout(resolve, 1250));
+
+    const checks = await page.evaluate(() => {
+      const brokenImages = [...document.images]
+        .filter((image) => !image.complete || image.naturalWidth === 0)
+        .map((image) => image.getAttribute('src'));
+      const unsafeBlankLinks = [...document.querySelectorAll('a[target="_blank"]')]
+        .filter((link) => !link.relList.contains('noopener'))
+        .map((link) => link.href);
+      const metricValues = [...document.querySelectorAll('.metric-value')].map((item) => item.textContent.trim());
+      const overflowingElements = [...document.querySelectorAll('body *')]
+        .filter((element) => {
+          const bounds = element.getBoundingClientRect();
+          const style = getComputedStyle(element);
+          return style.position !== 'fixed' && style.overflowX === 'visible' && (bounds.right > innerWidth + 1 || bounds.left < -1);
+        })
+        .slice(0, 20)
+        .map((element) => {
+          const bounds = element.getBoundingClientRect();
+          return {
+            element:`${element.tagName.toLowerCase()}.${element.className}`,
+            left:Math.round(bounds.left),
+            right:Math.round(bounds.right),
+            width:Math.round(bounds.width),
+          };
+        });
+
+      return {
+        brokenImages,
+        unsafeBlankLinks,
+        horizontalOverflow:document.documentElement.scrollWidth > window.innerWidth + 1,
+        metricValues,
+        overflowingElements,
+        clientCount:document.querySelectorAll('.client-card').length,
+        certificateCount:document.querySelectorAll('.credential').length,
+        whatsappLinks:document.querySelectorAll('a[href^="https://wa.me/5541996128878"]').length,
+      };
+    });
+
+    let accessibility = {status:'unavailable',violations:[]};
+    try {
+      await page.addScriptTag({url:'https://cdnjs.cloudflare.com/ajax/libs/axe-core/4.10.2/axe.min.js'});
+      accessibility = await page.evaluate(async () => {
+        const report = await axe.run(document, {runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21aa']}});
+        return {
+          status:'scanned',
+          violations:report.violations.map((violation) => ({
+            id:violation.id,
+            impact:violation.impact,
+            nodes:violation.nodes.length,
+            targets:violation.nodes.map((node) => ({target:node.target,html:node.html})),
+          })),
+        };
+      });
+    } catch (error) {
+      accessibility = {status:'unavailable',error:error.message,violations:[]};
+    }
+
     await page.screenshot({
       path:path.join(__dirname, `site-${view.name}.png`),
       fullPage:true,
     });
-    results.push({view:view.name,status:response.status(),title:await page.title(),errors});
+
+    results.push({
+      view:view.name,
+      viewport:`${view.width}x${view.height}`,
+      status:response.status(),
+      title:await page.title(),
+      errors,
+      failedRequests,
+      initialVitals,
+      checks,
+      accessibility,
+    });
     await page.close();
   }
+
   await browser.close();
   console.log(JSON.stringify(results,null,2));
-})();
+  process.exit(0);
+})().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});
