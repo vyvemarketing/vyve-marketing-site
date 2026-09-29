@@ -127,10 +127,11 @@ updateScrollProgress();
 const formatMetric = (value, element) => {
   const decimals = Number(element.dataset.decimals || 0);
   const prefix = element.dataset.prefix || '';
+  const suffix = element.dataset.suffix || '';
   return `${prefix}${new Intl.NumberFormat('pt-BR', {
     minimumFractionDigits:decimals,
     maximumFractionDigits:decimals
-  }).format(value)}`;
+  }).format(value)}${suffix}`;
 };
 
 const metricValues = document.querySelectorAll('.metric-value');

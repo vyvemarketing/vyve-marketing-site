@@ -115,6 +115,7 @@ const targetUrl = process.env.QA_URL || 'http://127.0.0.1:4179';
         credentialLogoCount:document.querySelectorAll('.credential-logo img').length,
         processIconCount:document.querySelectorAll('.step-icon svg').length,
         insightCardCount:document.querySelectorAll('.insight-card').length,
+        spendMetricCount:document.querySelectorAll('.metric-spend').length,
         infoproductCardCount:document.querySelectorAll('.infoproduct-card').length,
         whatsappFloatCount:document.querySelectorAll('.whatsapp-float').length,
         heroIsFullBleed:(() => {
@@ -175,6 +176,10 @@ const targetUrl = process.env.QA_URL || 'http://127.0.0.1:4179';
     '/blog/marketing-para-academias.html',
     '/blog/gestao-de-trafego-pago.html',
     '/blog/marketing-para-infoprodutores.html',
+    '/blog/marketing-para-delivery.html',
+    '/blog/marketing-para-oficinas.html',
+    '/blog/marketing-para-lojas-de-carros.html',
+    '/blog/marketing-para-lojas-de-roupas.html',
   ]) {
     const page = await browser.newPage();
     const errors = [];
