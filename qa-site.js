@@ -53,16 +53,23 @@ const targetUrl = process.env.QA_URL || 'http://127.0.0.1:4179';
       if (closed !== 'false') errors.push('Menu responsivo não fechou com Escape');
     }
 
+    await page.click('.carousel-toggle');
+    const carouselPaused = await page.evaluate(() => ({
+      pressed:document.querySelector('.carousel-toggle')?.getAttribute('aria-pressed'),
+      playState:getComputedStyle(document.querySelector('.client-track')).animationPlayState,
+    }));
+    if (carouselPaused.pressed !== 'true' || carouselPaused.playState !== 'paused') {
+      errors.push('Controle do carrossel não pausou a animação');
+    }
+    await page.click('.carousel-toggle');
+
     await page.evaluate(async () => {
       document.querySelectorAll('img[loading="lazy"]').forEach((image) => { image.loading = 'eager'; });
       for (let y = 0; y < document.body.scrollHeight; y += Math.floor(innerHeight * .72)) {
         window.scrollTo(0, y);
         await new Promise((resolve) => setTimeout(resolve, 80));
       }
-      const clientGrid = document.querySelector('.client-grid');
-      if (clientGrid) clientGrid.scrollLeft = clientGrid.scrollWidth;
       await new Promise((resolve) => setTimeout(resolve, 350));
-      if (clientGrid) clientGrid.scrollLeft = 0;
       document.querySelectorAll('.reveal').forEach((element) => element.classList.add('visible'));
       window.scrollTo(0, document.body.scrollHeight);
     });
@@ -99,8 +106,12 @@ const targetUrl = process.env.QA_URL || 'http://127.0.0.1:4179';
         horizontalOverflow:document.documentElement.scrollWidth > window.innerWidth + 1,
         metricValues,
         overflowingElements,
-        clientCount:document.querySelectorAll('.client-card').length,
-        certificateCount:document.querySelectorAll('.credential').length,
+        clientCount:document.querySelectorAll('.client-set:not([aria-hidden]) .client-card').length,
+        carouselCloneCount:document.querySelectorAll('.client-set[aria-hidden="true"] .client-card').length,
+        carouselReady:document.querySelector('.client-track')?.classList.contains('carousel-ready') || false,
+        carouselAnimation:getComputedStyle(document.querySelector('.client-track')).animationName,
+        certificationCount:document.querySelectorAll('.credential:not(.credential-specialty)').length,
+        specialtyCount:document.querySelectorAll('.credential-specialty').length,
         whatsappLinks:document.querySelectorAll('a[href^="https://wa.me/5541996128878"]').length,
       };
     });

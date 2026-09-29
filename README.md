@@ -14,6 +14,8 @@ Entrega com site institucional estático e campanha de nove posts para Instagram
 - `instagram/PLANO_DE_CONTEUDO.md`: legendas, sequência e cadência.
 - `instagram/ROTEIROS_REELS.md`: seis roteiros de vídeo.
 
+O site registra o histórico real de 67 marcas atendidas e apresenta uma seleção de nove identidades autorizadas em carrossel contínuo.
+
 ## Visualizar localmente
 
 Abra `index.html` no navegador ou execute:

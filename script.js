@@ -26,6 +26,27 @@ document.addEventListener('keydown', (event) => {
 const year = document.querySelector('#year');
 if (year) year.textContent = new Date().getFullYear();
 
+const clientTrack = document.querySelector('.client-track');
+const clientSet = clientTrack?.querySelector('.client-set');
+
+if (clientTrack && clientSet) {
+  const duplicateSet = clientSet.cloneNode(true);
+  duplicateSet.setAttribute('aria-hidden', 'true');
+  duplicateSet.querySelectorAll('a').forEach((link) => link.setAttribute('tabindex', '-1'));
+  duplicateSet.querySelectorAll('img').forEach((image) => image.setAttribute('alt', ''));
+  clientTrack.appendChild(duplicateSet);
+  clientTrack.classList.add('carousel-ready');
+}
+
+const carousel = document.querySelector('.client-carousel');
+const carouselToggle = document.querySelector('.carousel-toggle');
+
+carouselToggle?.addEventListener('click', () => {
+  const paused = carousel?.classList.toggle('paused') || false;
+  carouselToggle.setAttribute('aria-pressed', String(paused));
+  carouselToggle.innerHTML = paused ? 'Retomar <span>▶</span>' : 'Pausar <span>Ⅱ</span>';
+});
+
 const revealElements = document.querySelectorAll('.reveal');
 
 if ('IntersectionObserver' in window && !reduceMotion) {
