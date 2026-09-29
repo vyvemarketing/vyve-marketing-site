@@ -192,6 +192,8 @@ h1 em,h2 i { color:var(--lime); font-style:normal; }
 
 .footer { min-height:100px; padding-block:30px; display:flex; align-items:center; justify-content:space-between; gap:25px; border-top:1px solid var(--line); color:#8f8c87; font:400 11px/1 var(--mono); text-transform:uppercase; }
 .footer-logo { color:var(--paper); }
+.footer-social { color:var(--paper); padding-bottom:5px; border-bottom:1px solid var(--violet); transition:color .2s ease,border-color .2s ease; }
+.footer-social:hover { color:var(--lime); border-color:var(--lime); }
 .mobile-cta { display:none; }
 .js .reveal { opacity:0; transform:translateY(28px); transition:opacity .65s ease,transform .65s ease; }
 .js .reveal.visible { opacity:1; transform:none; }

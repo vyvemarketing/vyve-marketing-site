@@ -44,6 +44,7 @@ O script usa o Chromium já instalado no ambiente local e exporta nove imagens e
 
 ## Atualizações antes de campanhas pagas
 
-- Registrar o mesmo usuário nas redes sociais; recomendação: `@vyvemarketing`.
+- Instagram oficial registrado: [`@vyve_marketing`](https://www.instagram.com/vyve_marketing/).
+- Registrar `@vyve_marketing` também no TikTok para manter consistência entre as redes.
 - Instalar Google Analytics 4 e Meta Pixel após criar/confirmar as contas.
 - Adicionar política de privacidade antes de usar formulários ou pixels.
