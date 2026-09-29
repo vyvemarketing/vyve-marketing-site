@@ -16,7 +16,7 @@ Entrega com site institucional estático e campanha de nove posts para Instagram
 - `instagram/PLANO_DE_CONTEUDO.md`: legendas, sequência e cadência.
 - `instagram/ROTEIROS_REELS.md`: seis roteiros de vídeo.
 
-O site registra o histórico real de 67 marcas atendidas, mais de R$ 1,7 milhão gerenciado em mídia e apresenta uma seleção de nove identidades autorizadas em carrossel contínuo.
+O site registra o histórico consolidado de 67 marcas atendidas, mais de R$ 1,7 milhão gerenciado em mídia, mais de 369 mil leads gerados e mais de R$ 7 milhões faturados pelos clientes nos projetos acompanhados. O portfólio apresenta uma seleção de nove identidades autorizadas em carrossel contínuo.
 
 O site também oferece uma frente personalizada para infoprodutores, apresenta a experiência profissional de Eros e inclui `robots.txt`, `sitemap.xml` e dados estruturados de artigo. Ao conectar um domínio próprio, substitua as URLs canônicas e do sitemap pelo novo domínio antes de solicitar indexação no Google Search Console.
 

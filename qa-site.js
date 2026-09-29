@@ -116,6 +116,9 @@ const targetUrl = process.env.QA_URL || 'http://127.0.0.1:4179';
         processIconCount:document.querySelectorAll('.step-icon svg').length,
         insightCardCount:document.querySelectorAll('.insight-card').length,
         spendMetricCount:document.querySelectorAll('.metric-spend').length,
+        resultsMetricCount:document.querySelectorAll('.results .metric').length,
+        inlineWhatsappCount:document.querySelectorAll('.whatsapp-button').length,
+        resultsElosCaseMentions:(document.querySelector('#resultados')?.innerText.match(/case elos|sessões no site|seguidores no linkedin/gi) || []).length,
         infoproductCardCount:document.querySelectorAll('.infoproduct-card').length,
         whatsappFloatCount:document.querySelectorAll('.whatsapp-float').length,
         heroIsFullBleed:(() => {
