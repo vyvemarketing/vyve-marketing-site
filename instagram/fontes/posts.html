@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>VYVE — Posts Instagram</title>
+  <style>
+    :root { --ink:#070709; --paper:#f3f0e9; --violet:#7027ff; --lime:#c9ff18; --orange:#ff5b24; }
+    * { box-sizing: border-box; }
+    html, body { width:1080px; height:1080px; margin:0; overflow:hidden; background:var(--ink); }
+    body { font-family:"Arial Narrow","Helvetica Neue",Arial,sans-serif; }
+    .post { position:relative; width:1080px; height:1080px; overflow:hidden; isolation:isolate; background:var(--ink); color:white; }
+    .bg { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:-3; }
+    .shade { position:absolute; inset:0; z-index:-2; background:linear-gradient(90deg,rgba(5,5,7,.88) 0%,rgba(5,5,7,.42) 52%,rgba(5,5,7,.08) 100%); }
+    .shade.bottom { background:linear-gradient(0deg,rgba(5,5,7,.96),rgba(5,5,7,.10) 78%); }
+    .grid { position:absolute; inset:34px; border:1px solid rgba(255,255,255,.25); pointer-events:none; }
+    .grid:before,.grid:after { content:""; position:absolute; background:rgba(255,255,255,.15); }
+    .grid:before { left:66.666%; top:0; width:1px; height:100%; }
+    .grid:after { left:0; top:66.666%; height:1px; width:100%; }
+    .topline { position:absolute; top:58px; left:64px; right:64px; display:flex; align-items:center; justify-content:space-between; font:700 17px/1 "Courier New",monospace; letter-spacing:.08em; text-transform:uppercase; }
+    .brand { display:flex; align-items:center; gap:13px; }
+    .brand img { width:42px; height:42px; object-fit:cover; object-position:50% 22%; border-radius:50%; border:1px solid rgba(255,255,255,.28); }
+    .issue { color:var(--lime); }
+    .copy { position:absolute; left:64px; right:64px; top:200px; }
+    .eyebrow { display:inline-flex; align-items:center; gap:10px; margin-bottom:22px; padding:9px 14px; border:1px solid currentColor; font:700 18px/1 "Courier New",monospace; text-transform:uppercase; letter-spacing:.06em; }
+    h1 { margin:0; max-width:880px; font-size:95px; line-height:.88; letter-spacing:-.065em; font-weight:900; text-transform:uppercase; }
+    .sub { max-width:680px; margin:28px 0 0; font-size:30px; line-height:1.16; font-weight:600; letter-spacing:-.025em; }
+    .accent { color:var(--lime); }
+    .violet { color:#9a6cff; }
+    .footer { position:absolute; left:64px; right:64px; bottom:58px; display:flex; align-items:flex-end; justify-content:space-between; gap:20px; font:700 16px/1.25 "Courier New",monospace; text-transform:uppercase; letter-spacing:.04em; }
+    .cta { background:var(--lime); color:var(--ink); padding:14px 18px; }
+    .slash { font-size:28px; color:var(--violet); }
+    .light { color:var(--ink); background:var(--paper); }
+    .light .grid { border-color:rgba(8,8,10,.22); }
+    .light .grid:before,.light .grid:after { background:rgba(8,8,10,.16); }
+    .light .brand img { border-color:rgba(8,8,10,.35); }
+    .light .issue { color:#5a19ee; }
+    .light .shade { background:linear-gradient(90deg,rgba(243,240,233,.98) 0%,rgba(243,240,233,.74) 55%,rgba(243,240,233,.04) 100%); }
+    .p1 .copy { top:176px; }
+    .p1 h1 { font-size:118px; max-width:760px; }
+    .p1 .bg { filter:saturate(1.08) contrast(1.06); }
+    .p2 .copy { top:180px; }
+    .p2 h1 { font-size:90px; max-width:650px; }
+    .p3 .copy { top:175px; }
+    .p3 h1 { max-width:800px; font-size:88px; }
+    .p3 .shade { background:linear-gradient(90deg,rgba(5,5,7,.87) 0%,rgba(5,5,7,.50) 50%,rgba(5,5,7,.05) 100%); }
+    .p4 .copy { top:160px; }
+    .p4 h1 { max-width:700px; font-size:83px; }
+    .p4 .bg { object-position:58% 50%; }
+    .p5 .copy { top:162px; left:430px; }
+    .p5 h1 { font-size:72px; max-width:560px; }
+    .p5 .sub { max-width:510px; }
+    .p5 .shade { background:linear-gradient(270deg,rgba(5,5,7,.95),rgba(5,5,7,.68) 58%,rgba(5,5,7,.10)); }
+    .p6 .copy { top:auto; bottom:154px; }
+    .p6 h1 { font-size:82px; max-width:900px; }
+    .p6 .sub { font-size:25px; max-width:740px; }
+    .p7 .copy { top:150px; left:470px; }
+    .p7 h1 { font-size:78px; max-width:520px; }
+    .p7 .shade { background:linear-gradient(270deg,rgba(5,5,7,.94),rgba(5,5,7,.58) 55%,rgba(5,5,7,.05)); }
+    .p8 .copy { top:155px; }
+    .p8 h1 { font-size:90px; max-width:690px; }
+    .p8 .bg { object-position:65% 50%; }
+    .p9 .bg { opacity:.72; }
+    .p9 .portrait { position:absolute; right:-70px; bottom:-40px; width:610px; height:900px; object-fit:cover; object-position:center top; filter:saturate(.78) contrast(1.06); clip-path:polygon(14% 0,100% 7%,100% 100%,0 100%); z-index:-1; }
+    .p9 .shade { background:linear-gradient(90deg,rgba(5,5,7,.97) 0%,rgba(5,5,7,.85) 46%,rgba(5,5,7,.12) 80%); }
+    .p9 .copy { top:205px; }
+    .p9 h1 { font-size:86px; max-width:615px; }
+    .p9 .sub { max-width:540px; }
+  </style>
+</head>
+<body>
+  <main id="root"></main>
+  <script>
+    const posts = [
+      { n:'01', cls:'p1', bg:'../../assets/generated/01-wave.png', eye:'A VYVE VOLTOU', title:'VOLTAMOS.<br>MAS NÃO PRA<br><span class="accent">POSTAR BONITO.</span>', sub:'Voltamos para transformar mídia em conversa — e conversa em venda.', foot:'Estratégia • mídia • execução' },
+      { n:'02', cls:'p2', bg:'../../assets/generated/02-magnet.png', eye:'AQUISIÇÃO', title:'SEU NEGÓCIO<br>NÃO PRECISA DE<br><span class="accent">MAIS CLIQUES.</span>', sub:'Precisa atrair gente com intenção real de comprar.', foot:'Menos vaidade. Mais oportunidade.' },
+      { n:'03', cls:'p3', bg:'../../assets/generated/03-spotlight.png', eye:'CURITIBA + REGIÃO', title:'SEU CLIENTE<br>JÁ ESTÁ<br><span class="accent">PROCURANDO.</span>', sub:'A pergunta é: ele encontra você ou o concorrente?', foot:'Google • Meta • estratégia local' },
+      { n:'04', cls:'p4 light', bg:'../../assets/generated/04-knobs.png', eye:'MÍDIA COM CRITÉRIO', title:'NÃO É SOBRE<br>ESTAR EM<br><span class="violet">TODAS.</span>', sub:'É sobre estar na plataforma certa, com a mensagem certa.', foot:'Canal certo > canal da moda' },
+      { n:'05', cls:'p5', bg:'../../assets/generated/05-glass.png', eye:'GESTÃO MULTIPLATAFORMA', title:'META.<br>GOOGLE.<br>LINKEDIN.<br>TIKTOK.<br><span class="accent">AMAZON.</span>', sub:'A plataforma muda. A estratégia continua.', foot:'Planejar • testar • otimizar' },
+      { n:'06', cls:'p6', bg:'../../assets/generated/06-funnel.png', eye:'O FUNIL INTEIRO IMPORTA', title:'ANÚNCIO → LEAD →<br><span class="accent">ATENDIMENTO → VENDA</span>', sub:'Se uma etapa quebra, não é o anúncio que vai salvar tudo.', foot:'Mídia sem processo vira desperdício' },
+      { n:'07', cls:'p7', bg:'../../assets/generated/07-scanner.png', eye:'DIAGNÓSTICO VYVE', title:'EU ANALISO.<br>VOCÊ DECIDE<br>SE FAZ<br><span class="accent">SENTIDO.</span>', sub:'Diagnóstico inicial para empresas de Curitiba.', foot:'Sem pressão • com clareza', cta:'Quero meu diagnóstico' },
+      { n:'08', cls:'p8 light', bg:'../../assets/generated/08-button.png', eye:'VERDADE INCONVENIENTE', title:'IMPULSIONAR<br>POST NÃO É<br><span class="violet">ESTRATÉGIA.</span>', sub:'É só apertar um botão caro.', foot:'Configuração não substitui estratégia' },
+      { n:'09', cls:'p9', bg:'../../assets/generated/09-studio.png', portrait:'../../assets/brand/eros.jpg', eye:'PRAZER, EU SOU O EROS', title:'VYVE É A<br>MARCA.<br><span class="accent">EU RESPONDO.</span>', sub:'Estratégia direta, gestão próxima e zero atendimento robótico.', foot:'Curitiba • PR', cta:'Vamos conversar' }
+    ];
+    const i = Math.max(0, Math.min(posts.length - 1, Number(new URLSearchParams(location.search).get('post') || 1) - 1));
+    const p = posts[i];
+    document.title = `VYVE — Post ${p.n}`;
+    document.querySelector('#root').innerHTML = `
+      <article class="post ${p.cls}">
+        <img class="bg" src="${p.bg}" alt="">
+        ${p.portrait ? `<img class="portrait" src="${p.portrait}" alt="Eros">` : ''}
+        <div class="shade ${p.cls === 'p6' ? 'bottom' : ''}"></div>
+        <div class="grid"></div>
+        <header class="topline"><span class="brand"><img src="../../assets/brand/logo-vyve.png" alt=""><span>VYVE / MARKETING</span></span><span class="issue">CMG_${p.n}</span></header>
+        <section class="copy"><div class="eyebrow">${p.eye}</div><h1>${p.title}</h1><p class="sub">${p.sub}</p></section>
+        <footer class="footer"><span>${p.foot}</span>${p.cta ? `<span class="cta">${p.cta} ↗</span>` : '<span class="slash">///</span>'}</footer>
+      </article>`;
+  </script>
+</body>
+</html>
