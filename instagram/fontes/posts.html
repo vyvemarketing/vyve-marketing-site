@@ -66,12 +66,24 @@
     .p9 .copy { top:205px; }
     .p9 h1 { font-size:86px; max-width:615px; }
     .p9 .sub { max-width:540px; }
+    .campaign-v2 { font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; }
+    .campaign-v2 h1 { line-height:.94; letter-spacing:-.038em; font-weight:850; }
+    .campaign-v2 .sub { line-height:1.3; letter-spacing:-.012em; font-weight:550; }
+    .campaign-v2.p1 h1 { max-width:820px; font-size:104px; }
+    .campaign-v2.p2 h1 { max-width:720px; font-size:102px; }
+    .campaign-v2.p3 h1 { max-width:820px; font-size:88px; }
+    .campaign-v2.p4 h1 { max-width:760px; font-size:88px; }
+    .campaign-v2.p5 h1 { font-size:70px; }
+    .campaign-v2.p6 h1 { max-width:940px; font-size:76px; }
+    .campaign-v2.p7 h1 { font-size:73px; }
+    .campaign-v2.p8 h1 { max-width:760px; font-size:78px; }
+    .campaign-v2.p9 h1 { max-width:610px; font-size:78px; }
   </style>
 </head>
 <body>
   <main id="root"></main>
   <script>
-    const posts = [
+    const postsV1 = [
       { n:'01', cls:'p1', bg:'../../assets/generated/01-wave.png', eye:'A VYVE VOLTOU', title:'VOLTAMOS.<br>MAS NÃO PRA<br><span class="accent">POSTAR BONITO.</span>', sub:'Voltamos para transformar mídia em conversa — e conversa em venda.', foot:'Estratégia • mídia • execução' },
       { n:'02', cls:'p2', bg:'../../assets/generated/02-magnet.png', eye:'AQUISIÇÃO', title:'SEU NEGÓCIO<br>NÃO PRECISA DE<br><span class="accent">MAIS CLIQUES.</span>', sub:'Precisa atrair gente com intenção real de comprar.', foot:'Menos vaidade. Mais oportunidade.' },
       { n:'03', cls:'p3', bg:'../../assets/generated/03-spotlight.png', eye:'CURITIBA + REGIÃO', title:'SEU CLIENTE<br>JÁ ESTÁ<br><span class="accent">PROCURANDO.</span>', sub:'A pergunta é: ele encontra você ou o concorrente?', foot:'Google • Meta • estratégia local' },
@@ -82,16 +94,30 @@
       { n:'08', cls:'p8 light', bg:'../../assets/generated/08-button.png', eye:'VERDADE INCONVENIENTE', title:'IMPULSIONAR<br>POST NÃO É<br><span class="violet">ESTRATÉGIA.</span>', sub:'É só apertar um botão caro.', foot:'Configuração não substitui estratégia' },
       { n:'09', cls:'p9', bg:'../../assets/generated/09-studio.png', portrait:'../../assets/brand/eros.jpg', eye:'PRAZER, EU SOU O EROS', title:'VYVE É A<br>MARCA.<br><span class="accent">EU RESPONDO.</span>', sub:'Estratégia direta, gestão próxima e zero atendimento robótico.', foot:'Curitiba • PR', cta:'Vamos conversar' }
     ];
-    const i = Math.max(0, Math.min(posts.length - 1, Number(new URLSearchParams(location.search).get('post') || 1) - 1));
+    const postsV2 = [
+      { n:'01', cls:'p1', bg:'../../assets/generated/01-wave.png', eye:'VYVE MARKETING / CURITIBA', title:'9 ANOS.<br>67 MARCAS.<br><span class="accent">GESTÃO PRÓXIMA.</span>', sub:'Tráfego pago com estratégia, leitura de dados e contato direto.', foot:'Experiência • execução • performance', cta:'@vyve_marketing' },
+      { n:'02', cls:'p2', bg:'../../assets/generated/02-magnet.png', eye:'HISTÓRICO CONSOLIDADO', title:'<span class="accent">+369 MIL</span><br>LEADS<br>GERADOS.', sub:'Oportunidades geradas para clientes de diferentes segmentos e jornadas de compra.', foot:'Intenção > métrica de vaidade' },
+      { n:'03', cls:'p3', bg:'../../assets/generated/03-spotlight.png', eye:'RESULTADO DOS PROJETOS', title:'<span class="accent">+R$ 7 MI</span><br>FATURADOS<br>PELOS CLIENTES.', sub:'Faturamento acumulado nos projetos acompanhados ao longo da operação.', foot:'Resultados passados não garantem desempenho futuro' },
+      { n:'04', cls:'p4 light', bg:'../../assets/generated/04-knobs.png', eye:'EXPERIÊNCIA EM ADS', title:'<span class="violet">+R$ 1,7 MI</span><br>EM MÍDIA<br>GERENCIADA.', sub:'Planejamento, testes e otimização com verba real em diferentes plataformas.', foot:'Estratégia • controle • aprendizado' },
+      { n:'05', cls:'p5', bg:'../../assets/generated/05-glass.png', eye:'GESTÃO MULTIPLATAFORMA', title:'META.<br>GOOGLE.<br>LINKEDIN.<br>TIKTOK.<br><span class="accent">AMAZON.</span>', sub:'A plataforma muda. A estratégia e a responsabilidade continuam.', foot:'Canal certo para cada negócio' },
+      { n:'06', cls:'p6', bg:'../../assets/generated/06-funnel.png', eye:'O FUNIL INTEIRO IMPORTA', title:'ANÚNCIO → LEAD →<br><span class="accent">ATENDIMENTO → VENDA</span>', sub:'Quando uma etapa quebra, aumentar a verba só acelera o desperdício.', foot:'Mídia conectada ao processo comercial' },
+      { n:'07', cls:'p7', bg:'../../assets/generated/07-scanner.png', eye:'DIAGNÓSTICO VYVE', title:'EU ANALISO.<br>VOCÊ DECIDE<br>SE FAZ<br><span class="accent">SENTIDO.</span>', sub:'Oferta, margem, atendimento e canais antes de colocar campanha no ar.', foot:'Sem pressão • com clareza', cta:'Chame no WhatsApp' },
+      { n:'08', cls:'p8 light', bg:'../../assets/generated/08-button.png', eye:'MODELO INICIAL', title:'GESTÃO DE ADS<br>A PARTIR DE<br><span class="violet">R$ 800/MÊS.</span>', sub:'Operação próxima para negócios que querem sair do improviso.', foot:'Verba de mídia paga às plataformas', cta:'Peça um diagnóstico' },
+      { n:'09', cls:'p9', bg:'../../assets/generated/09-studio.png', portrait:'../../assets/brand/eros-ads-studio.webp', eye:'PRAZER, EU SOU O EROS', title:'VYVE É A<br>MARCA.<br><span class="accent">EU RESPONDO.</span>', sub:'9 anos de mercado, formação em Publicidade e especialização em Ads e gestão de IAs.', foot:'Curitiba • PR', cta:'Vamos conversar' }
+    ];
+    const params = new URLSearchParams(location.search);
+    const isV2 = params.get('v') === '2';
+    const posts = isV2 ? postsV2 : postsV1;
+    const i = Math.max(0, Math.min(posts.length - 1, Number(params.get('post') || 1) - 1));
     const p = posts[i];
     document.title = `VYVE — Post ${p.n}`;
     document.querySelector('#root').innerHTML = `
-      <article class="post ${p.cls}">
+      <article class="post ${p.cls} ${isV2 ? 'campaign-v2' : ''}">
         <img class="bg" src="${p.bg}" alt="">
         ${p.portrait ? `<img class="portrait" src="${p.portrait}" alt="Eros">` : ''}
         <div class="shade ${p.cls === 'p6' ? 'bottom' : ''}"></div>
         <div class="grid"></div>
-        <header class="topline"><span class="brand"><img src="../../assets/brand/logo-vyve.png" alt=""><span>VYVE / MARKETING</span></span><span class="issue">CMG_${p.n}</span></header>
+        <header class="topline"><span class="brand"><img src="../../assets/brand/logo-vyve.png" alt=""><span>VYVE / MARKETING</span></span><span class="issue">${isV2 ? `IG_${p.n}` : `CMG_${p.n}`}</span></header>
         <section class="copy"><div class="eyebrow">${p.eye}</div><h1>${p.title}</h1><p class="sub">${p.sub}</p></section>
         <footer class="footer"><span>${p.foot}</span>${p.cta ? `<span class="cta">${p.cta} ↗</span>` : '<span class="slash">///</span>'}</footer>
       </article>`;
