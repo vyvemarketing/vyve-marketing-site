@@ -60,9 +60,9 @@
     .p8 .copy { top:155px; }
     .p8 h1 { font-size:90px; max-width:690px; }
     .p8 .bg { object-position:65% 50%; }
-    .p9 .bg { opacity:.72; }
+    .p9 .bg { opacity:.9; object-position:center; filter:saturate(.92) contrast(1.04); }
     .p9 .portrait { position:absolute; right:-70px; bottom:-40px; width:610px; height:900px; object-fit:cover; object-position:center top; filter:saturate(.78) contrast(1.06); clip-path:polygon(14% 0,100% 7%,100% 100%,0 100%); z-index:-1; }
-    .p9 .shade { background:linear-gradient(90deg,rgba(5,5,7,.97) 0%,rgba(5,5,7,.85) 46%,rgba(5,5,7,.12) 80%); }
+    .p9 .shade { background:linear-gradient(90deg,rgba(5,5,7,.98) 0%,rgba(5,5,7,.88) 48%,rgba(5,5,7,.28) 68%,rgba(5,5,7,.04) 100%); }
     .p9 .copy { top:205px; }
     .p9 h1 { font-size:86px; max-width:615px; }
     .p9 .sub { max-width:540px; }
@@ -103,7 +103,7 @@
       { n:'06', cls:'p6', bg:'../../assets/generated/06-funnel.png', eye:'O FUNIL INTEIRO IMPORTA', title:'ANÚNCIO → LEAD →<br><span class="accent">ATENDIMENTO → VENDA</span>', sub:'Quando uma etapa quebra, aumentar a verba só acelera o desperdício.', foot:'Mídia conectada ao processo comercial' },
       { n:'07', cls:'p7', bg:'../../assets/generated/07-scanner.png', eye:'DIAGNÓSTICO VYVE', title:'EU ANALISO.<br>VOCÊ DECIDE<br>SE FAZ<br><span class="accent">SENTIDO.</span>', sub:'Oferta, margem, atendimento e canais antes de colocar campanha no ar.', foot:'Sem pressão • com clareza', cta:'Chame no WhatsApp' },
       { n:'08', cls:'p8 light', bg:'../../assets/generated/08-button.png', eye:'MODELO INICIAL', title:'GESTÃO DE ADS<br>A PARTIR DE<br><span class="violet">R$ 800/MÊS.</span>', sub:'Operação próxima para negócios que querem sair do improviso.', foot:'Verba de mídia paga às plataformas', cta:'Peça um diagnóstico' },
-      { n:'09', cls:'p9', bg:'../../assets/generated/09-studio.png', portrait:'../../assets/brand/eros-ads-studio.webp', eye:'PRAZER, EU SOU O EROS', title:'VYVE É A<br>MARCA.<br><span class="accent">EU RESPONDO.</span>', sub:'9 anos de mercado, formação em Publicidade e especialização em Ads e gestão de IAs.', foot:'Curitiba • PR', cta:'Vamos conversar' }
+      { n:'09', cls:'p9', bg:'../../assets/generated/09-studio-no-person.png', eye:'PRAZER, EU SOU O EROS', title:'VYVE É A<br>MARCA.<br><span class="accent">EU RESPONDO.</span>', sub:'9 anos de mercado, formação em Publicidade e especialização em Ads e gestão de IAs.', foot:'Curitiba • PR', cta:'Vamos conversar' }
     ];
     const params = new URLSearchParams(location.search);
     const isV2 = params.get('v') === '2';
