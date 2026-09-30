@@ -178,10 +178,6 @@ h1 em,h2 i { color:var(--lime); font-style:normal; }
 .credential-specialty .credential-logo { box-shadow:5px 5px 0 var(--lime); }
 .credential-specialty .credential-type { color:#b99cff; }
 .credential-specialty > span { background:var(--violet); color:white; }
-.platform-stack { padding:28px 0; border-bottom:1px solid var(--line); }
-.platform-stack > p { margin:0 0 18px; color:#84817c; font:500 10px/1 var(--mono); text-transform:uppercase; }
-.platform-stack > div { display:flex; flex-wrap:wrap; gap:9px; }
-.platform-stack span { padding:10px 12px; border:1px solid var(--line); font:500 10px/1 var(--mono); text-transform:uppercase; }
 .credential-note { margin:18px 0 0; color:#aaa7a2; font:400 10px/1.5 var(--mono); text-transform:uppercase; }
 
 .investment { padding-block:145px; display:grid; grid-template-columns:1fr .8fr; gap:9vw; align-items:start; }
