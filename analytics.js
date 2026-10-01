@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const measurementId = 'G-84D2LJGPH1';
+  const measurementId = 'G-B1X61VRSY1';
   const campaignKeys = [
     'utm_source',
     'utm_medium',
